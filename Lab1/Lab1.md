@@ -55,10 +55,94 @@ int main()
 
 ## Section 3
 
-1. For size 11:
-	char array = 11 bytes
-	int array = 44 bytes
-	float array = 44 bytes
-2. There is a difference. A char is typically 1 byte and float and int is typically 4 bytes.
+Code:
+```c
+#include <stdio.h>
+#include <stdlib.h>
 
- 
+int main()
+{
+	int N = 0;
+	char* Nc = NULL;
+	int* Ni = NULL;
+	float* Nf = NULL;
+
+	int NcSize = 0;
+	int NiSize = 0;
+	int NfSize = 0;
+
+	while(N <= 10)
+	{
+		printf("Please enter a number greater than 10: ");
+		scanf("%d", &N);
+	}
+
+	NcSize = N * sizeof(char);
+	NiSize = N * sizeof(int);
+	NfSize = N * sizeof(float);
+
+	printf("Size of char array: %d\n", NcSize);
+	printf("Size of int array: %d\n", NiSize);
+	printf("Size of float array: %d\n", NfSize);
+
+	Nc = (char*)malloc(NcSize);
+
+	if(Nc == NULL)
+	{
+		perror("ERROR: Bad malloc of char array\n");
+		exit(1);
+	}
+
+        Ni = (int*)malloc(NiSize);
+
+        if(Ni == NULL)
+        {
+		free(Nc);
+                perror("ERROR: Bad malloc of int array\n");
+                exit(1);
+        }
+
+        Nf = (float*)malloc(NfSize);
+
+        if(Nf == NULL)
+        {
+		free(Nc);
+		free(Ni);
+                perror("ERROR: Bad malloc of float array\n");
+                exit(1);
+        }
+
+	free(Nc);
+	free(Ni);
+	free(Nf);
+
+	return 0;
+}
+```
+
+Commands used to compile:
+```
+gcc ./code2.c -o myprogram
+```
+
+```
+gcc -c ./code2.c
+gcc ./code2.o -o myprogram
+```
+
+For size  N = 11
+
+Data Type | Bytes |
+--- | --- |
+`char` | 11 |
+`int` | 44 |
+`float` | 44 |
+
+There is a difference. A `char` is typically 1 byte and `float` and `int` is typically 4 bytes. So 11 `char` would be 11 bytes and 11 `int` would be 44 bytes.
+
+## Section 4
+
+
+
+
+
