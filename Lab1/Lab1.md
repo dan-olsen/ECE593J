@@ -1,23 +1,59 @@
-Section 1
-=========
+# ECE 593J - Lab 1 - Daniel Olsen
+## Section 1
 
-1. drwxrwx---   2 dolsen eegrad             2 Feb  5 17:16 ECE_593
+Privilege rights for "ECE_593":
+```
+drwxrwx---   2 dolsen eegrad             2 Feb  5 17:16 ECE_593
+```
 
-2. drwxrwx---  2 dolsen eegrad    2 Feb  5 17:19 exercise1
+Privilege rights for "exercise1":
+```
+drwxrwx---  2 dolsen eegrad    2 Feb  5 17:19 exercise1
+```
 
-3.1 -rw-rw---- 1 dolsen eegrad 0 Feb  5 17:21 code1
-3.2 -rwxrwx--- 1 dolsen eegrad 0 Feb  5 17:21 code1
-3.3 Yes. The file is empty
+Original privilege rights for "code1":
+```
+-rw-rw---- 1 dolsen eegrad 0 Feb  5 17:21 code1
+```
+Privilege rights after execution rights were added:
+```
+-rwxrwx--- 1 dolsen eegrad 0 Feb  5 17:21 code1
+```
 
-Section 2
-=========
+There is something wrong. The file is empty and the terminal does not know how to execute it.
 
-1. Need #include <stdio.h>. 
-2. No, the %d for the sqrt result needs to be %f because sqrt returns a double not an int.
-2.1. To fix remaning error need to put int in front of main and return 0 at end of main function. 
+## Section 2
 
-Section 3
-=========
+Changes needed to given code:
+
+1. Need to add the stdio library inorder to use `printf()`
+```c
+#include <stdio.h>
+```
+
+The program does not produce the correct result. The `%d` for the sqrt result needs to be `%f` because sqrt returns a double not an int.
+
+To fix the remaining errors add `int` in front of main and `return 0` at end of main function. 
+
+Corrected code:
+```c
+#include <math.h>
+#include <stdio.h>
+
+int main()
+{
+	int i;
+
+	printf("\t Number \t\t Square Root of Number\n\n");
+
+	for (i=0; i<=360; ++i)
+		printf("\t %d \t\t\t %f \n",i, sqrt(i));
+
+	return 0;
+}
+```
+
+## Section 3
 
 1. For size 11:
 	char array = 11 bytes
