@@ -143,6 +143,84 @@ There is a difference. A `char` is typically 1 byte and `float` and `int` is typ
 ## Section 4
 
 
+There is warnings. The types of `char_pointer = int_array` and `int_pointer = char_array` are incompatible. Also, the output is wrong.
 
+Changing the following lines will remove the errors and correct the output.
 
+```c
+int_pointer = int_pointer + 1;
+```
+to
+```c
+int_pointer = (int*)((char*)int_pointer + 1);
+```
+and
+```c
+char_pointer = char_pointer + 1;
+```
+to 
+```c
+char_pointer = (char*)((int*)char_pointer + 1);
+```
 
+Before the changes were made the first loop printed addresses that differed by 4 bytes because the `int*` was being increased by 4 bytes or the size of 1 `int`. And the second loop printed addresses that differed by 1 byte because the `char*` was being increased by 1 byte or the size of 1 `char`. The pointer arthemitic was increasing the pointer by the same type of the pointer instead of the type the pointer points to.
+
+Corrected code:
+```c
+#include<stdio.h>
+
+int main(){
+
+  int i;
+  char char_array[5] = {'a', 'b', 'c', 'd', 'e'};
+  int int_array[5] = {1, 2, 3, 4, 5};
+
+  char *char_pointer;
+  int *int_pointer;
+
+  char_pointer = (char*) int_array;
+  int_pointer = (int*) char_array;
+
+  for(i=0; i < 5; i++) {
+    printf("[Integer pointer] points to %p, which contains the char '%c'\n", int_pointer, *int_pointer);
+    int_pointer = (int*)((char*)int_pointer + 1);
+  }
+
+  for(i=0; i < 5; i++) {
+    printf("[Char pointer] points to %p, which contains the integer '%d'\n", char_pointer, *char_pointer);
+    char_pointer = (char*)((int*)char_pointer + 1);
+  }
+
+}
+```
+
+## Section 5
+
+Code for `void*`:
+```c
+#include<stdio.h>
+
+int main(){
+
+  int i;
+  char char_array[5] = {'a', 'b', 'c', 'd', 'e'};
+  int int_array[5] = {1, 2, 3, 4, 5};
+
+  void *pointer;
+
+  pointer = char_array;
+
+  for(i=0; i < 5; i++) {
+    printf("[Integer pointer] points to %p, which contains the char '%c'\n", pointer, *(char*)pointer);
+    pointer = (char*)pointer + 1;
+  }
+
+  pointer = int_array;
+
+  for(i=0; i < 5; i++) {
+    printf("[Char pointer] points to %p, which contains the integer '%d'\n", pointer, *(int*)pointer);
+    pointer = (int*)pointer + 1;
+  }
+
+}
+```
