@@ -3,12 +3,12 @@
 
 Privilege rights for "ECE_593":
 ```
-drwxrwx---   2 dolsen eegrad             2 Feb  5 17:16 ECE_593
+drwxrwx---   2 dolsen eegrad 2 Feb  5 17:16 ECE_593
 ```
 
 Privilege rights for "exercise1":
 ```
-drwxrwx---  2 dolsen eegrad    2 Feb  5 17:19 exercise1
+drwxrwx--- 2 dolsen eegrad 2 Feb  5 17:19 exercise1
 ```
 
 Original privilege rights for "code1":
@@ -26,14 +26,14 @@ There is something wrong. The file is empty and the terminal does not know how t
 
 Changes needed to given code:
 
-1. Need to add the stdio library inorder to use `printf()`
+1. Need to add the stdio library in order to use `printf()`
 ```c
 #include <stdio.h>
 ```
 
-The program does not produce the correct result. The `%d` for the sqrt result needs to be `%f` because sqrt returns a double not an int.
+The program does not produce the correct result. The `%d` for the `sqrt` result needs to be `%f` because `sqrt` returns a double not an int.
 
-To fix the remaining errors add `int` in front of main and `return 0` at end of main function. 
+To fix the remaining errors add `int` in front of main and `return 0` at end of main function.
 
 Corrected code:
 ```c
@@ -143,10 +143,19 @@ There is a difference. A `char` is typically 1 byte and `float` and `int` is typ
 ## Section 4
 
 
-There is warnings. The types of `char_pointer = int_array` and `int_pointer = char_array` are incompatible. Also, the output is wrong.
+There are warnings. The types of `char_pointer = int_array` and `int_pointer = char_array` are incompatible. Also, the output is wrong.
 
-Changing the following lines will remove the errors and correct the output.
-
+Changing the following lines will remove the warnings and correct the output.
+```c
+char_pointer = int_array;
+int_pointer = char_array;
+```
+to
+```c
+char_pointer = (char*) int_array;
+int_pointer = (int*) char_array;
+```
+and
 ```c
 int_pointer = int_pointer + 1;
 ```
@@ -163,7 +172,7 @@ to
 char_pointer = (char*)((int*)char_pointer + 1);
 ```
 
-Before the changes were made the first loop printed addresses that differed by 4 bytes because the `int*` was being increased by 4 bytes or the size of 1 `int`. And the second loop printed addresses that differed by 1 byte because the `char*` was being increased by 1 byte or the size of 1 `char`. The pointer arthemitic was increasing the pointer by the same type of the pointer instead of the type the pointer points to.
+Before the changes were made the first loop printed addresses that differed by 4 bytes because the `int*` was being increased by 4 bytes or the size of 1 `int`. And the second loop printed addresses that differed by 1 byte because the `char*` was being increased by 1 byte or the size of 1 `char`. The pointer arithmetic was increasing the pointer by the same type of the pointer instead of the type the pointer points to.
 
 Corrected code:
 ```c
@@ -224,3 +233,35 @@ int main(){
 
 }
 ```
+
+Code for `unsigned int*`:
+
+```c
+#include<stdio.h>
+
+int main(){
+
+  int i;
+  char char_array[5] = {'a', 'b', 'c', 'd', 'e'};
+  int int_array[5] = {1, 2, 3, 4, 5};
+
+  unsigned int *pointer;
+
+  pointer = (unsigned int*)char_array;
+
+  for(i=0; i < 5; i++) {
+    printf("[Integer pointer] points to %p, which contains the char '%c'\n", pointer, *pointer);
+    pointer = (unsigned int*)((char*)pointer + 1);
+  }
+
+  pointer = (unsigned int*)int_array;
+
+  for(i=0; i < 5; i++) {
+    printf("[Char pointer] points to %p, which contains the integer '%d'\n", pointer, *pointer);
+    pointer = (unsigned int*)((int*)pointer + 1);
+  }
+
+}
+```
+
+The `void*` is the more appropriate solution because this is what `void*` are meant to do and the `unsigned int*` requires more type casting.
