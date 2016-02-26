@@ -217,3 +217,57 @@ clean:
 ```
 
 ##Section 3
+###Code
+```c
+#include <stdio.h>
+
+int main(int argc, char* argv[])
+{
+	FILE * f;
+	int x, N, i;
+
+	if (argc!=2)
+	{
+		printf("Wrong inputs\n");
+		return -1;
+	}
+	if ((N = atoi(argv[1])) < 0)
+	{
+		printf("Wrong inputs\n");
+		return -1;
+	}
+
+	for(i = 0; i < N; ++i)
+	{
+		f = fopen ("data.txt","r+");
+
+		if (f != NULL)
+		{
+			fscanf(f, "%d", &x);
+
+			printf("%d\n", x);
+
+			x+=5;
+			rewind(f);
+
+			fprintf (f, "%d", x);
+			fclose (f);
+		}
+	}
+
+	return 0;
+}
+```
+
+###Output
+```
+dolsen@engEE-e121-Dxx ~/Git/ECE593J/Lab2/Section3 $ ./program2 4
+20
+25
+30
+35
+```
+
+The starting value in the file was 20 and the final value was 40.
+
+##Section 4
