@@ -122,3 +122,98 @@ int tester(int* c, int k) {
 ```
 
 ##Section 2
+###Code
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main()
+{
+	int N = 0;
+	int i;
+	pid_t child;
+	
+	printf("Enter number greater than 10: ");
+	scanf("%d", &N);
+	
+	if(N > 10)
+	{
+
+		for(i = 0; i < N; ++i)
+		{
+			child = fork();
+
+			if(child < 0)
+			{
+        			printf("Error");
+        			exit(1);
+
+			} else if(child == 0)
+			{
+				time_t t = time(NULL);
+				
+				printf("Child (%d): pid = %d, time = %s\n", i, getpid(), asctime(localtime(&t)));
+				
+				exit(0);
+			}
+		}
+
+		printf("Parent: pid = %d\n", getpid());
+		
+		int status;
+		for (i = 0; i < N; ++i)
+		{
+    			wait(&status);
+		}
+	}
+
+	return 0;
+}
+```
+
+###Sample Output
+```
+Enter number greater than 10: 11
+Child (0): pid = 10348, time = Fri Feb 26 15:55:15 2016
+Child (1): pid = 10349, time = Fri Feb 26 15:55:15 2016
+Child (2): pid = 10350, time = Fri Feb 26 15:55:15 2016
+Child (3): pid = 10351, time = Fri Feb 26 15:55:15 2016
+Child (4): pid = 10352, time = Fri Feb 26 15:55:15 2016
+Child (5): pid = 10353, time = Fri Feb 26 15:55:15 2016
+Child (6): pid = 10354, time = Fri Feb 26 15:55:15 2016
+Child (7): pid = 10355, time = Fri Feb 26 15:55:15 2016
+Child (8): pid = 10356, time = Fri Feb 26 15:55:15 2016
+Child (9): pid = 10357, time = Fri Feb 26 15:55:15 2016
+Child (10): pid = 10358, time = Fri Feb 26 15:55:15 2016
+Parent: pid = 10343
+```
+
+The pid's are different and the time is dirrent. The OS chooses free pid's to assign the new processes. 
+
+The maximum number of processes that linux supports by default is 32768 and more specifically the `ulimit` system limits a given user to 31115 processes. 
+
+###Commands Used
+```bash
+dolsen@engEE-e121-Dxx ~/Git/ECE593J/Lab2/Section2 $ ulimit -u
+31115
+dolsen@engEE-e121-Dxx ~/Git/ECE593J/Lab2/Section2 $ cat /proc/sys/kernel/pid_max
+32768
+```
+
+As the program is now the maximum can never be hit because if we spawn 40,000 processes the processes that are spawned first will exit before the last ones are created.
+
+###Makefile
+```make
+program1: main.o
+	gcc -o program2 main.o
+
+input.o: main.c
+	gcc -Wall -g -c main.c
+
+clean: 
+	rm ./*.o
+	rm ./program2
+```
+
+##Section 3
