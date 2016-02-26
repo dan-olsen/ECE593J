@@ -261,7 +261,7 @@ int main(int argc, char* argv[])
 
 ###Output
 ```
-dolsen@engEE-e121-Dxx ~/Git/ECE593J/Lab2/Section3 $ ./program2 4
+dolsen@engEE-e121-Dxx ~/Git/ECE593J/Lab2/Section3 $ ./program3 4
 20
 25
 30
@@ -269,5 +269,18 @@ dolsen@engEE-e121-Dxx ~/Git/ECE593J/Lab2/Section3 $ ./program2 4
 ```
 
 The starting value in the file was 20 and the final value was 40.
+
+###Makefile
+```make
+program1: main.o
+	gcc -o program3 main.o
+
+input.o: main.c
+	gcc -Wall -g -c main.c
+
+clean: 
+	rm ./*.o
+	rm ./program3
+```
 
 ##Section 4
