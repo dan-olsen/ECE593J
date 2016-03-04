@@ -279,3 +279,24 @@ clean:
 ```
 
 ##Section 4
+
+The way this code is written it will always work. However, if there any of the following changes made the request_signal could be dropped due to the ```kill()``` call being executed before the ```pause()```.
+
+###Change 1
+```c
+//signal handler is not set up before fork()
+if((pid = fork()) == 0)
+{
+	//signal handler set up after fork()
+	signal(request_signal, onintr);
+	pause();
+}
+```
+
+###Change 2
+```c
+onintr()
+{
+	//anything other than exit()
+}
+```
