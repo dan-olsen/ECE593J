@@ -54,7 +54,21 @@ void child_signal_handler()
 	exit(0);
 }
 ```
-
+###Output
+```
+dolsen@engEE-e121-Dxx ~/Git/ECE593J/Lab4/Section2 $ ./program2 11
+Child 1 (19457): 0
+Child 1 (19457): 1
+Child 1 (19457): 2
+Child 2 (19458): 3
+Child 2 (19458): 4
+Child 2 (19458): 5
+Child 2 (19458): 6
+Child 3 (19459): 7
+Child 3 (19459): 8
+Child 3 (19459): 9
+Child 3 (19459): 10
+```
 ###Makefile
 ```make
 program1: lab4-section1.o
@@ -68,7 +82,7 @@ clean:
 	rm ./program1
 ```
 ### Questions
-Child 1 does not know the PID of child 2 so for child 1 to send a signal to child 2 it would have to first signal the parent who would then signal child 2. There is an issue here if the parent dies before child 1 sends its signal child 2 will never recieve the signal.
+Child 1 does not know the PID of child 2 so for child 1 to send a signal to child 2 it would have to first signal the parent who would then signal child 2. There is an issue here if the parent dies before child 1 sends its signal child 2 will never receive the signal.
 
 You would use the same idea as before however before child 1 forks the parent's PID would need to be stored in a variable the new child would inherit.
 
@@ -205,6 +219,26 @@ void parent_singal_handler()
 	signal(SIGUSR2, parent_singal_handler);
 }
 ```
+###Output
+```
+dolsen@engEE-e121-Dxx ~/Git/ECE593J/Lab4/Section1 $ ./program1 
+Child 1: Executing "ls /home/"
+Child 2: Executing "mkdir new"
+dolsen	local1
+Child PID: 19436 Parent PID: 19435
+Child PID: 19437 Parent PID: 19435
+```
+###Makefile
+```make
+program2: lab4-section2.o
+	gcc -o program2 lab4-section2.o
 
+lab4-section2.o: lab4-section2.c
+	gcc -Wall -g -c lab4-section2.c
+
+clean: 
+	rm ./*.o
+	rm ./program2
+```
 ###Questions
-There could be an issue that could lead to a signal being dropped. Because the signal handlers are set up in the children the parent needs to sleep before signaling the first child. This sleep does not guarantee that the signal handlers have been set up in the children when the parent sends the first signal. If the handlers are not set up the children will just terminate (default action for SIGUSR1) and the parent will not recieve the response from child 1 and will wait forever.
+There could be an issue that could lead to a signal being dropped. Because the signal handlers are set up in the children the parent needs to sleep before signaling the first child. This sleep does not guarantee that the signal handlers have been set up in the children when the parent sends the first signal. If the handlers are not set up the children will just terminate (default action for SIGUSR1) and the parent will not receive the response from child 1 and will wait forever.
