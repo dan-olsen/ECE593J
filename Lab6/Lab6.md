@@ -61,8 +61,6 @@ void *parallel(int num_tasks)
 | Parallel | 1          | 0m0.129s  | 0m0.132s  | 0m0.000s    |
 | Serial   | 2          | 0m0.229s  | 0m0.224s  | 0m0.000s    |
 | Parallel | 2          | 0m0.139s  | 0m0.272s  | 0m0.000s    |
-| Serial   | 5          | 0m0.446s  | 0m0.444s  | 0m0.000s    |
-| Parallel | 5          | 0m0.187s  | 0m0.628s  | 0m0.000s    |
 | Serial   | 10         | 0m0.826s  | 0m0.820s  | 0m0.000s    |
 | Parallel | 10         | 0m0.287s  | 0m1.060s  | 0m0.000s    |
 | Serial   | 20         | 0m1.608s  | 0m1.600s  | 0m0.000s    |
