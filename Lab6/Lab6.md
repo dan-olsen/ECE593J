@@ -24,7 +24,6 @@ void *parallel(int num_tasks)
   long i = 0;
   int r;
   void *status;
-
   pthread_attr_t attr;
   pthread_t threads[MAX_NUM_THREADS];
 
