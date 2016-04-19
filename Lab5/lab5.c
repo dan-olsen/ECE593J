@@ -4,6 +4,8 @@
 #include <sys/types.h>
 #include <wait.h>
 
+int finished;
+
 struct node
 {
 	//Struct for the node of the queue
@@ -50,9 +52,12 @@ pid_t dequeue(struct queue *q)
     return p;
 }
 
-void termchild()
+void term_child()
 {
-//Signal hanlder, the termination of a process
+	//Signal hanlder, the termination of a process
+	signal(SIGCHLD, term_child);
+
+	finished = 1;
 
 }
 
@@ -67,8 +72,10 @@ int main(int argc, char const *argv[])
 	q.back = NULL;
 	q.size = 0;
 
+	finished = 0;
+
 	//Variable initialization
-	signal(SIGCHLD, termchild);
+	signal(SIGCHLD, term_child);
 
 	if(argc > 2)
 	{
@@ -80,7 +87,7 @@ int main(int argc, char const *argv[])
 		exit(-1);
 	}
 
-	for(programCount = 0, i = 2; i < argc - 2; i++)
+	for(programCount = 0, i = 2; i < argc; i++)
 	{
 		programCount++;
 		//Fork, execl processes and enqueue
@@ -102,23 +109,30 @@ int main(int argc, char const *argv[])
 	{
 		pid_t p = dequeue(&q);
 
+		finished = 0;
 		kill(p, SIGCONT);
 
 		usleep(qt);
 
-		//if(child has not finished)
-		//{
+		if(!finished)
+		{
 			//send the signal SIGUSR1 to the first element in queue
-			//usleep(1000);
-			//dequeue and re−enqueue
-		//}
-		//else
-		//{
-			//printf("A child is dead\n");
+			kill(p, SIGUSR1);
+
+			usleep(1000);
+
+			enqueue(&q, p);
+		}
+		else
+		{
+			
+			printf("Child %d is finished\n", p);
 			//remove from list
 			//mark child as dead
-		//}
+		}
 	}
+
+	printf("All of my children finished so goodbye...\n");
 
 	return 0;
 }
