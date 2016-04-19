@@ -92,7 +92,7 @@ int main(int argc, char const *argv[])
 		printf("Usage: %s qt1 qt2 prog1 [prog2] ... [prog[N}\n", argv[0]);
 		exit(-1);
 	}
-
+	
 	for(programCount = 0, i = 3; i < argc; i++)
 	{
 		programCount++;
@@ -118,7 +118,7 @@ int main(int argc, char const *argv[])
 		finished = 0;
 		kill(p, SIGCONT);
 
-		usleep(qt);
+		usleep(qt1);
 
 		if(!finished)
 		{
@@ -145,7 +145,7 @@ int main(int argc, char const *argv[])
 		finished = 0;
 		kill(p, SIGCONT);
 
-		usleep(qt);
+		usleep(qt2);
 
 		if(!finished)
 		{

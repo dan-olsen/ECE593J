@@ -125,7 +125,6 @@ int main(int argc, char const *argv[])
 		}
 		else
 		{
-			
 			printf("Child %d is finished\n", p);
 			//remove from list
 			//mark child as dead
